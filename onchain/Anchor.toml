@@ -11,7 +11,7 @@ onchain = "J4S8hv9YmzqTsxpv4PWzn4DwMx6o5k3kCAhyQrmRKXcE"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
