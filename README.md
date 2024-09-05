@@ -1,12 +1,104 @@
 # Encode Club x Solana Bootcamp Final Project
+Group 4, Q3 2024
 
 ## Getting Started Developing
-### Building the front end project
+### Quickstart: Set versions for previously-installed tools
+If you already have these tools installed, but need to switch versions, use these commands.
 ```
-  cd frontend
-  npm install
-  npm run dev
+$ rustup install 1.75.0
+$ rustup default 1.75.0
+$ rustc --version
+
+$ solana-install init 1.16.24
+$ export PATH="~/.local/share/solana/install/active_release/bin:$PATH"
+$ solana --version
+
+$ avm install 0.29.0
+$ avm use 0.29.0
+$ anchor --version
 ```
+
+### Installing the Toolchain
+As of this writing, these are the versions from the Solana Playground Anchor Environment (https://github.com/solana-playground/solana-playground/tree/68569dd9e53357e69ae2ef7caaed2ae8819dd08a). Anchor is tightly coupled to Solana-CLI and Rustup, so if the versions of these utilities aren't compatible, the toolchain breaks.
+
+I may have forgotten to include some instances of `export PATH=...`. Generally, if one of these installation scripts tells you to include something new in your path, you probably should.
+
+#### Install Node.js & Yarn
+```
+$ curl -fsSL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
+$ chmod a+x nodesource_setup.sh
+$ sudo ./nodesource_setup.sh
+$ sudo apt install nodejs -y
+$ node --version
+
+$ sudo corepack enable
+$ cd ~/src/Encode_Solana_Bootcamp-Final_Project
+$ yarn set version 1.22.19
+$ yarn install
+$ yarn --version
+```
+
+#### Install Rust
+```
+$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+You will be presented with a menu:
+```
+Current installation options:
+
+
+   default host triple: x86_64-unknown-linux-gnu
+     default toolchain: stable (default)
+               profile: default
+  modify PATH variable: yes
+
+1) Proceed with standard installation (default - just press enter)
+2) Customize installation
+3) Cancel installation
+```
+Enter "2". When you're asked
+```
+Default toolchain? (stable/beta/nightly/none) [stable]
+```
+enter "1.75.0".
+
+You can change the active version of Rust later using:
+```
+$ rustup install 1.75.0
+$ rustup default 1.75.0
+$ rustc --version
+```
+
+#### Install Solana CLI:
+```
+$ sh -c "$(curl -sSfL https://release.solana.com/v1.16.24/install)"
+
+$ export PATH="~/.local/share/solana/install/active_release/bin:$PATH"
+
+$ solana --version
+```
+
+You can change the active version of the Solana tools later using:
+```
+$ solana-install init 1.16.24
+$ solana --version
+```
+
+#### Install AVM/Anchor
+```
+$ cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+$ avm install 0.29.0
+$ avm use 0.29.0
+$ anchor --version
+```
+
+### Building the frontend project
+```
+$ cd frontend
+$ npm install
+$ npm run dev
+```
+
 ### Wallet setup
 A Solana private key looks something like:
 ```
@@ -16,44 +108,41 @@ You can copy it from a Solana-CLI wallet you've set up or a copy-and-paste it fr
 ```
 ~/.config/solana/id.json
 ```
-Then, configure these environmental variables required by Anchor (assuming you're using bash; the syntax for other shells may vary):
+
+### Solana RPC setup (Localhost)
 ```
-export ANCHOR_PROVIDER_URL="https://api.devnet.solana.com"
-export ANCHOR_WALLET="~/.config/solana/id.json"
+$ solana config set --url localhost
 ```
 
+In a new window, run
+```
+$ solana-test-validator
+```
+
+### Solana RPC setup (devnet)
 Configure Solana RPC endpoint:
 ```
-solana config get
-solana config set --url https://api.devnet.solana.com
+$ solana config set --url https://api.devnet.solana.com
+$ solana config get
 ```
 
+You may have to configure these environmental variables used by Anchor (assuming you're using bash; the syntax for other shells may vary):
+```
+$ export ANCHOR_PROVIDER_URL="https://api.devnet.solana.com"
+$ export ANCHOR_WALLET="~/.config/solana/id.json"
+```
 
 ### Building and testing the Anchor project
 ```
-cd onchain/
-cargo build
+$ cd onchain/
+$ anchor build
+$ anchor deploy
 ```
 
-```cargo test bpf```
+```anchor test``` is a superset of ```anchor deploy```.
 
-or equivalently
-
-```cargo test sbf```
-Example output:
-```
-$ cargo test bpf
-   Compiling onchain v0.1.0 (/home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/onchain/programs/onchain)
-    Finished test [unoptimized + debuginfo] target(s) in 1.08s
-     Running unittests src/lib.rs (target/debug/deps/onchain-acfb36eb85ef3ab6)
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
-```
-
-### Related commands and possible errors
-The causes of some of the errors in this section are unclear; they may or may not be obstacles.
+### Possible errors
+If you install Rustup a different way than described above, or if the versions of Rust, Anchor, and Solana CLI are incompatible, you will probably get one of the following errors:
 
 ```
 $ cargo build-sbf
@@ -62,8 +151,6 @@ error: no such command: `+solana`
 	Cargo does not handle `+toolchain` directives.
 	Did you mean to invoke `cargo` through `rustup` instead?
 ```
-This is most likely a sign that you're calling `cargo` with incorrect arguments, however some sources suggest you may need to update Rust or Solana-CLI.
-
 
 ```
 $ anchor build
@@ -76,41 +163,9 @@ error: no such command: `+solana`
 ```
 
 ```
-anchor test
+$ anchor test
 error: no such command: `+solana`
 
 	Cargo does not handle `+toolchain` directives.
 	Did you mean to invoke `cargo` through `rustup` instead?
-```
-
-```
-$ yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts
-yarn run v1.22.22
-$ /home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/onchain/node_modules/.bin/ts-mocha -p ./tsconfig.json -t 1000000 'tests/**/*.ts'
-
-Error: target/idl/onchain.json doesn't exist. Did you run `anchor build`?
-    at Object.get (/home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/onchain/node_modules/@coral-xyz/anchor/src/workspace.ts:65:15)
-    at Suite.<anonymous> (/home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/onchain/tests/onchain.ts:9:36)
-    at Object.create (/home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/onchain/node_modules/mocha/lib/interfaces/common.js:148:19)
-    at context.describe.context.context (/home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/onchain/node_modules/mocha/lib/interfaces/bdd.js:42:27)
-    at Object.<anonymous> (/home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/onchain/tests/onchain.ts:5:1)
-    at Module._compile (node:internal/modules/cjs/loader:1256:14)
-    at Module.m._compile (/home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/onchain/node_modules/ts-node/src/index.ts:439:23)
-    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
-    at Object.require.extensions.<computed> [as .ts] (/home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/onchain/node_modules/ts-node/src/index.ts:442:12)
-    at Module.load (node:internal/modules/cjs/loader:1119:32)
-    at Function.Module._load (node:internal/modules/cjs/loader:960:12)
-    at Module.require (node:internal/modules/cjs/loader:1143:19)
-    at require (node:internal/modules/cjs/helpers:121:18)
-    at Object.exports.requireOrImport (/home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/onchain/node_modules/mocha/lib/nodejs/esm-utils.js:60:20)
-    at Object.exports.loadFilesAsync (/home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/onchain/node_modules/mocha/lib/nodejs/esm-utils.js:103:20)
-    at singleRun (/home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/onchain/node_modules/mocha/lib/cli/run-helpers.js:125:3)
-    at Object.exports.handler (/home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/onchain/node_modules/mocha/lib/cli/run.js:374:5)
-error Command failed with exit code 1.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-```
-
-It's unclear why `anchor test` is not equivalent to
-```
-yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts
 ```
