@@ -10,7 +10,7 @@ $ rustup default 1.75.0
 $ rustc --version
 
 $ solana-install init 1.16.24
-$ export PATH="~/.local/share/solana/install/active_release/bin:$PATH"
+$ export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 $ solana --version
 
 $ avm install 0.29.0
@@ -73,7 +73,7 @@ $ rustc --version
 ```
 $ sh -c "$(curl -sSfL https://release.solana.com/v1.16.24/install)"
 
-$ export PATH="~/.local/share/solana/install/active_release/bin:$PATH"
+$ export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 
 $ solana --version
 ```
@@ -129,7 +129,7 @@ $ solana config get
 You may have to configure these environmental variables used by Anchor (assuming you're using bash; the syntax for other shells may vary):
 ```
 $ export ANCHOR_PROVIDER_URL="https://api.devnet.solana.com"
-$ export ANCHOR_WALLET="~/.config/solana/id.json"
+$ export ANCHOR_WALLET="$HOME/.config/solana/id.json"
 ```
 
 ### Building and testing the Anchor project
