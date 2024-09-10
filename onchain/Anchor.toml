@@ -5,7 +5,7 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-onchain = "J4S8hv9YmzqTsxpv4PWzn4DwMx6o5k3kCAhyQrmRKXcE"
+onchain = "HKLaiMcEwpE13t8C3gNVaN2mMMvd1a4m9qr9GpoXHpo8"
 
 [registry]
 url = "https://api.apr.dev"

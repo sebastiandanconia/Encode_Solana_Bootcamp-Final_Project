@@ -203,3 +203,23 @@ Or to recover the account's lamports, pass it as the
 Error: Account ... has insufficient funds for spend (2.46738264 SOL) + fee (0.0009 SOL)
 There was a problem deploying: Output { status: ExitStatus(unix_wait_status(256)), stdout: "", stderr: "" }.
 ```
+
+
+```
+Error: AnchorError occurred. Error Code: DeclaredProgramIdMismatch. Error Number: 4100. Error Message: The declared program id does not match the actual program id
+```
+Check the key Anchor is using for deployment using
+```
+~/src/Encode_Solana_Bootcamp-Final_Project/onchain$ solana-keygen pubkey target/deploy/onchain-keypair.json
+```
+This must match (in `Anchor.toml`):
+```
+[programs.localnet]
+onchain = "..."
+```
+and (in `onchain/programs/onchain/src/lib.rs`):
+```
+declare_id!("...");
+```
+
+`onchain/target/deploy/onchain-keypair.json` may be deleted by `anchor clean`.
