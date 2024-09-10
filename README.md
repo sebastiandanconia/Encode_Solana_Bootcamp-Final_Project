@@ -108,18 +108,22 @@ You can copy it from a Solana-CLI wallet you've set up or a copy-and-paste it fr
 ```
 ~/.config/solana/id.json
 ```
+```
+$ solana config set --keypair ~/.config/solana/id.json
+$ solana config get
+```
 
 ### Solana RPC setup (Localhost)
 ```
 $ solana config set --url localhost
 ```
 
-Note: `anchor test` apparently runs its own local validator, so this step is optional. In a new window, run
+In a new window, run
 ```
 $ solana-test-validator
 ```
 
-### Solana RPC setup (devnet)
+### Solana RPC setup
 Configure Solana RPC endpoint:
 ```
 $ solana config set --url https://api.devnet.solana.com
@@ -143,9 +147,11 @@ $ export ANCHOR_WALLET="$HOME/.config/solana/id.json"
 $ cd onchain/
 $ anchor build
 $ anchor deploy
-```
 
-```anchor test``` is a superset of ```anchor deploy```.
+# Note: `anchor test` runs its own local validator by default, which can cause conflicts.
+$ anchor test --skip-local-validator
+```
+These commands have a slightly complicated relationship. Either see the Anchor documentation or experiment on your own until you're familiar with their behavior. The most conservative way is to run them one at a time in sequence.
 
 ### Possible errors
 If you install Rustup a different way than described above, or if the versions of Rust, Anchor, and Solana CLI are incompatible, you will probably get one of the following errors:
@@ -174,4 +180,26 @@ error: no such command: `+solana`
 
 	Cargo does not handle `+toolchain` directives.
 	Did you mean to invoke `cargo` through `rustup` instead?
+```
+
+If you get an error like the following, try running `solana-test-validator` with the `--reset` option:
+```
+$ anchor deploy
+Deploying cluster: http://localhost:8899
+Upgrade authority: /home/sebastian/.config/solana/id.json
+Deploying program "wen_moon"...
+Program path: /home/sebastian/src/Encode_Solana_Bootcamp-Final_Project/wen-moon/target/deploy/wen_moon.so...
+============================================================================
+Recover the intermediate account's ephemeral keypair file with
+`solana-keygen recover` and the following 12-word seed phrase:
+============================================================================
+...
+============================================================================
+To resume a deploy, pass the recovered keypair as the
+[BUFFER_SIGNER] to `solana program deploy` or `solana program write-buffer'.
+Or to recover the account's lamports, pass it as the
+[BUFFER_ACCOUNT_ADDRESS] argument to `solana program close`.
+============================================================================
+Error: Account ... has insufficient funds for spend (2.46738264 SOL) + fee (0.0009 SOL)
+There was a problem deploying: Output { status: ExitStatus(unix_wait_status(256)), stdout: "", stderr: "" }.
 ```
