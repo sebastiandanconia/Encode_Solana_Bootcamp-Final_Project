@@ -42,19 +42,19 @@ pub mod onchain {
     }
     */
     pub fn init_user_and_buy(ctx: Context<InitUserAndBuy>,
-        outcome: u32, num: u128) -> Result<()> {
+        outcome: u32, num: u64) -> Result<()> {
             ctx.accounts.user_holdings.a = 0;
             ctx.accounts.user_holdings.b = 0;
-            match char::from_u32(outcome).unwrap() {
-                'A' => ctx.accounts.user_holdings.a = num,
-                'B' => ctx.accounts.user_holdings.b = num,
+            match /*char::from_u32(*/outcome/*).unwrap()*/ {
+                65 => ctx.accounts.user_holdings.a = num,
+                66 => ctx.accounts.user_holdings.b = num,
                 _ => ()
                 }
         Ok(())
     }
     
 
-    pub fn balance(ctx: Context<CBalance>) -> Result<(u128, u128)> {
+    pub fn balance(ctx: Context<CBalance>) -> Result<(u64, u64)> {
         Ok((ctx.accounts.user_holdings.a, ctx.accounts.user_holdings.b))
     }
 }
@@ -205,8 +205,8 @@ pub struct Market {
 #[account]
 pub struct UserHoldings {
     // Holdings
-    a: u128,
-    b: u128,
+    a: u64,
+    b: u64,
 
     bump: u8, // Figure out why the example does this
 }
