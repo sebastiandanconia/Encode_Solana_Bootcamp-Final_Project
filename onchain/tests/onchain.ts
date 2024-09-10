@@ -12,5 +12,12 @@ describe("onchain", () => {
     // Add your test here.
     const tx = await program.methods.initialize().rpc();
     console.log("Your transaction signature", tx);
+
+/*
+    let buy1 = await program.methods.initUserAndBuy('A', 5).rpc();
+
+    let read1 = await program.methods.balance().rpc();
+    console.log("Account balance: {}\t", read1);
+*/
   });
 });
