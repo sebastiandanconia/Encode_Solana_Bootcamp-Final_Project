@@ -114,7 +114,7 @@ You can copy it from a Solana-CLI wallet you've set up or a copy-and-paste it fr
 $ solana config set --url localhost
 ```
 
-In a new window, run
+Note: `anchor test` apparently runs its own local validator, so this step is optional. In a new window, run
 ```
 $ solana-test-validator
 ```
@@ -128,9 +128,15 @@ $ solana config get
 
 You may have to configure these environmental variables used by Anchor (assuming you're using bash; the syntax for other shells may vary):
 ```
+# If using Localnet:
+$ export ANCHOR_PROVIDER_URL="http://localhost:8899/"
+# OR
+# If using devnet:
 $ export ANCHOR_PROVIDER_URL="https://api.devnet.solana.com"
+
 $ export ANCHOR_WALLET="$HOME/.config/solana/id.json"
 ```
+`ANCHOR_PROVIDER_URL` should be consistent with `provider.cluster` in `Anchor.toml`.
 
 ### Building and testing the Anchor project
 ```
