@@ -4,8 +4,10 @@ import { Onchain } from "../target/types/onchain";
 
 describe("onchain", () => {
   // Configure the client to use the local cluster.
+  console.log(anchor.AnchorProvider.env());
   anchor.setProvider(anchor.AnchorProvider.env());
 
+  console.log(Onchain);
   const program = anchor.workspace.Onchain as Program<Onchain>;
 
   it("Is initialized!", async () => {
