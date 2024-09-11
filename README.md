@@ -99,6 +99,12 @@ $ npm install
 $ npm run dev
 ```
 
+### Building the dApp Scaffold
+```
+$ cd dapp-scaffold
+$ npm install
+$ npm run dev
+
 ### Wallet setup
 A Solana private key looks something like:
 ```
